@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nia — UGC Creator</title>
+<meta name="description" content="Nia (@nia.sia_) — NYC UGC creator making videos about consumer brands, food, pilates, fitness, wellness and cultural experiences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf6ef;
+    --surface: #ffffff;
+    --ink: #2a2622;
+    --muted: #6f665c;
+    --line: #e8dfd2;
+    --matcha: #6b8f5e;
+    --matcha-soft: #e4ecdc;
+    --clay: #c8795a;
+    --clay-soft: #f5e3d9;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250, 246, 239, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font-family: Fraunces, serif; font-size: 22px; font-weight: 600; text-decoration: none; }
+  nav ul { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
+  nav ul a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--muted); }
+  nav ul a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { padding: 88px 0 72px; text-align: center; }
+  .eyebrow {
+    display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--matcha); background: var(--matcha-soft); padding: 6px 14px; border-radius: 999px;
+  }
+  h1 {
+    font-family: Fraunces, serif; font-weight: 400; font-size: clamp(44px, 8vw, 84px);
+    line-height: 1.02; margin: 22px 0 18px; letter-spacing: -0.02em;
+  }
+  h1 em { color: var(--clay); }
+  .tagline {
+    font-family: Fraunces, serif; font-style: italic; font-size: clamp(20px, 2.6vw, 26px);
+    max-width: 640px; margin: 0 auto 22px; line-height: 1.35; text-wrap: balance;
+  }
+  .lede { max-width: 620px; margin: 0 auto; font-size: 18px; color: var(--muted); }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 999px;
+    font-weight: 600; font-size: 15px; text-decoration: none; transition: transform .15s, background .15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-ghost { border: 1.5px solid var(--ink); }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  .section-head { text-align: center; margin-bottom: 40px; }
+  h2 { font-family: Fraunces, serif; font-weight: 400; font-size: clamp(32px, 5vw, 46px); margin: 0 0 10px; letter-spacing: -0.01em; }
+  .section-head p { color: var(--muted); margin: 0; }
+
+  /* Topics */
+  .topics { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 760px; margin: 0 auto; }
+  .topic {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    padding: 10px 18px; font-size: 15px; font-weight: 500;
+  }
+
+  /* Work */
+  .tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+  .tab {
+    border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+    font: 600 15px Inter, sans-serif; padding: 11px 22px; border-radius: 999px; cursor: pointer;
+  }
+  .tab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .grid {
+    display: grid; gap: 24px; justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 340px));
+  }
+  .reel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; box-shadow: 0 6px 24px rgba(42, 38, 34, .06);
+  }
+  .panel[hidden] { display: none; }
+  .reel { margin: 0; }
+  /* 9:16 frame. Instagram's embed is cropped to just the video:
+     its ~54px profile header is pushed above the frame, the 4:5 media box is
+     widened so the 9:16 video fills the width, and everything below is clipped. */
+  .media { position: relative; aspect-ratio: 9 / 16; overflow: hidden; background: #000; }
+  .media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .media iframe {
+    position: absolute; border: 0;
+    top: -55px; left: -21.4%;
+    width: 142.8%; height: calc(100% + 400px);
+  }
+  .reel figcaption, .reel .caption {
+    padding: 14px 18px 16px; font-family: Fraunces, serif; font-size: 18px; line-height: 1.35;
+  }
+  .reel figcaption span, .reel .caption .tag {
+    display: table; margin-bottom: 7px;
+    font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--clay); background: var(--clay-soft); padding: 4px 9px; border-radius: 999px;
+  }
+  .reel .caption .tag { color: var(--matcha); background: var(--matcha-soft); }
+
+  /* Brands */
+  .brand-group {
+    text-align: center; font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--clay); margin: 0 0 16px;
+  }
+  .brand-group + .brand-list + .brand-group { margin-top: 40px; color: var(--matcha); }
+  .brand-list {
+    list-style: none; margin: 0 auto; padding: 0; max-width: 940px;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+  }
+  .brand-list li {
+    flex: 0 1 220px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 16px; text-align: center; font-family: Fraunces, serif; font-size: 22px;
+  }
+  @media (max-width: 640px) {
+    .brand-list li { flex-basis: calc(50% - 6px); font-size: 17px; padding: 16px 6px; }
+  }
+
+  /* Contact */
+  .contact {
+    background: var(--ink); color: var(--bg); border-radius: 28px; text-align: center;
+    padding: 64px 24px; margin: 0 0 72px;
+  }
+  .contact h2 { color: var(--bg); }
+  .contact p { color: #cfc6ba; max-width: 520px; margin: 0 auto 28px; }
+  .contact .btn-primary { background: var(--bg); color: var(--ink); }
+  .contact .email { display: block; margin-top: 18px; font-size: 15px; color: #cfc6ba; word-break: break-all; }
+
+  footer { text-align: center; color: var(--muted); font-size: 14px; padding: 0 0 40px; }
+
+  @media (max-width: 640px) {
+    nav ul { gap: 14px; }
+    nav ul li.hide-sm { display: none; }
+    .hero { padding: 56px 0 48px; }
+    section { padding: 52px 0; }
+    .grid { grid-template-columns: minmax(0, 340px); }
+    .contact { border-radius: 20px; padding: 48px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top">Nia</a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li class="hide-sm"><a href="#brands">Brands</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">UGC Creator · New York City</span>
+    <h1>Nia <em>in NYC</em></h1>
+    <p class="tagline">Professional side quester.</p>
+    <p class="lede">Hi, I'm Nia. I'm figuring out my 20s but avidly exploring NYC and living my life to the fullest along the way. I make videos about consumer brands, food, fitness, and the wellness and cultural experiences that make NYC special.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#contact">Work with me</a>
+      <a class="btn btn-ghost" href="https://www.instagram.com/nia.sia_/" target="_blank" rel="noopener">@nia.sia_</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What I create</h2>
+      <p>Authentic, lifestyle-first content for brands that fit into everyday life.</p>
+    </div>
+    <div class="topics">
+      <span class="topic">🛍️ Consumer brands</span>
+      <span class="topic">🍜 Food &amp; drink</span>
+      <span class="topic">🧘‍♀️ Pilates</span>
+      <span class="topic">💪 Fitness classes</span>
+      <span class="topic">🌿 Health &amp; wellbeing</span>
+      <span class="topic">✨ Cultural experiences</span>
+      <span class="topic">🗽 NYC wellness spots</span>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Portfolio</h2>
+      <p>Tap any video to play.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-lifestyle" id="tab-lifestyle">Lifestyle &amp; Experiences</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-food" id="tab-food">Food</button>
+    </div>
+
+    <div class="panel" id="panel-lifestyle" role="tabpanel" aria-labelledby="tab-lifestyle">
+      <div class="grid" data-reels="
+        Dc_rDMTx9j3 | Experience | Longest Table: Potluck with 1,400 People;
+        DcGvhtWsBXA | Fitness | NYC Summer Outdoor Workout Classes;
+        DeXCRB4xRJB | Wellness | Dancing at Daybreaker's Alive Festival;
+        DQObm_wDnpW | Experience | Side Quest: A Solo Rave;
+        DajyPPZNxkX | Culture | Sail250 Tall Ships Tour"></div>
+    </div>
+    <div class="panel" id="panel-food" role="tabpanel" aria-labelledby="tab-food" hidden>
+      <div class="grid" data-reels="
+        DYiyI2KsCFl | Food | NYC's Froyo Line Obsession;
+        DZ230SFxf6i | Food | Mythos Froyo Review;
+        DaTWF9gIkMv | Food | Ansa Micro Coffee Roastery;
+        DQDTabWDDTm | Food | Secret Froyo Spot on UWS">
+        <figure class="reel">
+          <div class="media"><video src="media/concept-1.mp4" poster="media/concept-1.jpg" controls playsinline preload="none"></video></div>
+          <figcaption><span>Client</span> Too Good To Go</figcaption>
+        </figure>
+        <figure class="reel">
+          <div class="media"><video src="media/concept-2.mp4" poster="media/concept-2.jpg" controls playsinline preload="none"></video></div>
+          <figcaption><span>Client</span> Too Good To Go</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brands">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Brands I've worked with</h2>
+    </div>
+    <h3 class="brand-group">UGC clients</h3>
+    <ul class="brand-list">
+      <li>Too Good To Go</li>
+      <li>Tsubi Soups</li>
+      <li>Crafti Matcha</li>
+    </ul>
+    <h3 class="brand-group">Brand partnerships</h3>
+    <ul class="brand-list partners">
+      <li>Kiehl's</li>
+      <li>Sourmilk</li>
+      <li>Daily Crunch</li>
+      <li>Gruins</li>
+      <li>Pistakio</li>
+      <li>Tofugo</li>
+      <li>Cocomo</li>
+      <li>Nea App</li>
+    </ul>
+  </div>
+</section>
+
+<div class="wrap" id="contact">
+  <div class="contact">
+    <h2>Let's create together</h2>
+    <p>Looking for UGC for your brand, product, studio or experience? I'd love to hear about it.</p>
+    <a class="btn btn-primary" href="mailto:pilatespleasenyc@gmail.com?subject=UGC%20collaboration">Email me</a>
+    <span class="email">pilatespleasenyc@gmail.com</span>
+  </div>
+</div>
+
+<footer>© <span id="yr"></span> Nia · <a href="https://www.instagram.com/nia.sia_/" target="_blank" rel="noopener">@nia.sia_</a></footer>
+
+<script>
+  // Build Instagram reel embeds from the IDs listed on each grid.
+  document.querySelectorAll('.grid[data-reels]').forEach(function (grid) {
+    // Format per reel: "ID | Tag | Caption", reels separated by ";"
+    grid.dataset.reels.split(';').forEach(function (entry) {
+      var parts = entry.split('|').map(function (s) { return s.trim(); });
+      var id = parts[0], tag = parts[1], text = parts[2];
+      if (!id) return;
+      var card = document.createElement('div');
+      card.className = 'reel';
+      var frame = document.createElement('div');
+      frame.className = 'media';
+      var f = document.createElement('iframe');
+      f.src = 'https://www.instagram.com/reel/' + id.trim() + '/embed/';
+      f.loading = 'lazy';
+      f.title = 'Instagram reel by @nia.sia_';
+      f.setAttribute('scrolling', 'no');
+      f.setAttribute('allowtransparency', 'true');
+      f.setAttribute('allow', 'encrypted-media; autoplay; clipboard-write; picture-in-picture');
+      frame.appendChild(f);
+      card.appendChild(frame);
+      if (text) {
+        var cap = document.createElement('div');
+        cap.className = 'caption';
+        var t = document.createElement('span');
+        t.className = 'tag';
+        t.textContent = tag;
+        cap.appendChild(t);
+        cap.appendChild(document.createTextNode(' ' + text));
+        card.appendChild(cap);
+      }
+      grid.appendChild(card);
+    });
+  });
+
+  // Tabs
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on);
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
