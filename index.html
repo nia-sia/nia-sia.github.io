@@ -111,6 +111,22 @@
     top: -55px; left: -21.4%;
     width: 142.8%; height: calc(100% + 400px);
   }
+  .stats {
+    position: absolute; top: 12px; left: 12px; z-index: 2; pointer-events: none;
+    background: rgba(255, 255, 255, .94); color: var(--ink);
+    font: 600 12.5px Inter, sans-serif; padding: 6px 11px; border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+  }
+  .stats::before { content: "🔥 "; }
+  .ig-link {
+    position: absolute; inset: 0; z-index: 1;
+    display: flex; align-items: flex-end; justify-content: center; padding-bottom: 18px;
+    text-decoration: none;
+  }
+  .ig-link span {
+    background: rgba(42, 38, 34, .82); color: #fff; font: 600 13px Inter, sans-serif;
+    padding: 8px 14px; border-radius: 999px;
+  }
   .reel figcaption, .reel .caption {
     padding: 14px 18px 16px; font-family: Fraunces, serif; font-size: 18px; line-height: 1.35;
   }
@@ -221,17 +237,17 @@
     <div class="panel" id="panel-lifestyle" role="tabpanel" aria-labelledby="tab-lifestyle">
       <div class="grid" data-reels="
         Dc_rDMTx9j3 | Experience | Longest Table: Potluck with 1,400 People;
-        DcGvhtWsBXA | Fitness | NYC Summer Outdoor Workout Classes;
+        DcGvhtWsBXA | Fitness | NYC Summer Outdoor Workout Classes | | ig-only;
         DeXCRB4xRJB | Wellness | Dancing at Daybreaker's Alive Festival;
         DQObm_wDnpW | Experience | Side Quest: A Solo Rave;
         DajyPPZNxkX | Culture | Sail250 Tall Ships Tour"></div>
     </div>
     <div class="panel" id="panel-food" role="tabpanel" aria-labelledby="tab-food" hidden>
       <div class="grid" data-reels="
-        DYiyI2KsCFl | Food | NYC's Froyo Line Obsession;
-        DZ230SFxf6i | Food | Mythos Froyo Review;
-        DaTWF9gIkMv | Food | Ansa Micro Coffee Roastery;
-        DQDTabWDDTm | Food | Secret Froyo Spot on UWS">
+        DQDTabWDDTm | Food | Secret Froyo Spot on UWS | 149K views · 3.6K shares | ig-only;
+        DaTWF9gIkMv | Food | Ansa Micro Coffee Roastery | 25.1K views;
+        DYiyI2KsCFl | Food | NYC's Froyo Line Obsession | 9.4K views;
+        DZ230SFxf6i | Food | Mythos Froyo Review | 8.3K views | ig-only">
         <figure class="reel">
           <div class="media"><video src="media/concept-1.mp4" poster="media/concept-1.jpg" controls playsinline preload="none"></video></div>
           <figcaption><span>Client</span> Too Good To Go</figcaption>
@@ -284,10 +300,13 @@
 <script>
   // Build Instagram reel embeds from the IDs listed on each grid.
   document.querySelectorAll('.grid[data-reels]').forEach(function (grid) {
-    // Format per reel: "ID | Tag | Caption", reels separated by ";"
+    // Format per reel: "ID | Tag | Caption | Stats (optional) | ig-only (optional)", reels separated by ";"
+    // Stats: shown as a badge only when filled in, e.g. "149K views · 3.6K shares".
+    // ig-only: Instagram blocks this Reel from playing on other sites (licensed music),
+    //          so the card opens it on Instagram in a new tab instead.
     grid.dataset.reels.split(';').forEach(function (entry) {
       var parts = entry.split('|').map(function (s) { return s.trim(); });
-      var id = parts[0], tag = parts[1], text = parts[2];
+      var id = parts[0], tag = parts[1], text = parts[2], stats = parts[3], igOnly = parts[4] === 'ig-only';
       if (!id) return;
       var card = document.createElement('div');
       card.className = 'reel';
@@ -301,6 +320,22 @@
       f.setAttribute('allowtransparency', 'true');
       f.setAttribute('allow', 'encrypted-media; autoplay; clipboard-write; picture-in-picture');
       frame.appendChild(f);
+      if (stats) {
+        var b = document.createElement('div');
+        b.className = 'stats';
+        b.textContent = stats;
+        frame.appendChild(b);
+      }
+      if (igOnly) {
+        var link = document.createElement('a');
+        link.className = 'ig-link';
+        link.href = 'https://www.instagram.com/reel/' + id + '/';
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.setAttribute('aria-label', 'Watch on Instagram (opens in a new tab)');
+        link.innerHTML = '<span>Watch on Instagram ↗</span>';
+        frame.appendChild(link);
+      }
       card.appendChild(frame);
       if (text) {
         var cap = document.createElement('div');
